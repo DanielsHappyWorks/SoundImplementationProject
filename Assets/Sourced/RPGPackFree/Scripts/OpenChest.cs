@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class OpenChest : MonoBehaviour {
 
@@ -14,17 +15,25 @@ public class OpenChest : MonoBehaviour {
 
     public float speed = 0.5f;
 
+	private bool isPlayerNear;
+
+	private RigidbodyFirstPersonController playerController;
+
     int newAngle = 127;
 
     // Use this for initialization
     void Start () {
         openedAngle = transform.rotation;
         closedAngle = Quaternion.Euler(transform.eulerAngles + Vector3.right * newAngle);
+		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
+		isPlayerNear = false;
+
     }
 	
 	// Update is called once per frame
 	void Update () {
 
+		CheckInteraction ();
         if (closing)
         {
             factor += speed * Time.deltaTime;
@@ -59,4 +68,28 @@ public class OpenChest : MonoBehaviour {
         opening = true;
         closing = false;
     }
+
+	//New - Added code to trigger chest opening
+	void OnTriggerEnter(Collider player) {
+		if (player.tag == "Player" ) {
+			isPlayerNear = true;
+			print ("Player near");
+		}
+	}
+
+	void OnTriggerExit(Collider player) {
+		if (player.tag == "Player") {			
+			isPlayerNear = false;
+			print ("Player not near");
+		}
+	}
+
+	//New - Checks requirements to allow for chest opening
+	void CheckInteraction()
+	{
+		if (isPlayerNear && Input.GetKeyDown (KeyCode.E) && playerController.noOfPickups == 3) {
+			Open ();	
+		}
+			
+	}
 }

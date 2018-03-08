@@ -87,7 +87,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
-        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+		private bool m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+		public bool m_Jump;
+
+		public int noOfPickups;
 
 
         public Vector3 Velocity
@@ -123,6 +126,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
+			noOfPickups = 0;
         }
 
 

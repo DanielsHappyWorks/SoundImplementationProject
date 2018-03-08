@@ -32,11 +32,11 @@ public class EnemyController : MonoBehaviour
             if (Vector3.Distance(transform.position, Player.position) >= MinDist) {
                 transform.LookAt(Player);
                 transform.position += transform.forward * MoveSpeed * Time.deltaTime;
-                if (!isWalking){
-                    animator.Play("Idle");
-                    isWalking = true;
-                    isIdling = false;
-                }
+				if (!isWalking && !animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+					animator.Play ("Walk");
+					isWalking = true;
+					isIdling = false;
+				}
             } 
         }
         else {
@@ -44,8 +44,8 @@ public class EnemyController : MonoBehaviour
             {
                 transform.LookAt(OriginalPosition);
                 transform.position += transform.forward * MoveSpeed * Time.deltaTime;
-                if (!isWalking){
-                    animator.Play("Idle");
+				if (!isWalking && !animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")){
+					animator.Play("Walk");
                     isWalking = true;
                     isIdling = false;
                 }
