@@ -13,10 +13,12 @@ public class EnemyController : MonoBehaviour
     public bool isWalking = false;
     public bool isIdling = true;
     Animator animator;
+	private Rigidbody rb;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+		rb = GetComponent<Rigidbody> ();
     }
 
     void Update()
@@ -31,8 +33,10 @@ public class EnemyController : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, Player.position) >= MinDist) {
                 transform.LookAt(Player);
-                transform.position += transform.forward * MoveSpeed * Time.deltaTime;
-				if (!isWalking && !animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                //transform.position += transform.forward * MoveSpeed * Time.deltaTime;
+				rb.AddForce (transform.forward * MoveSpeed);
+				//transform
+				if (!isWalking && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
 					animator.Play ("Walk");
 					isWalking = true;
 					isIdling = false;

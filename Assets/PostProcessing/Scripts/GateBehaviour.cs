@@ -10,7 +10,7 @@ public class GateBehaviour : MonoBehaviour {
 	Quaternion gateClosed = Quaternion.identity;
 	Quaternion gateOpened = Quaternion.identity;
 
-	public float gateOpenAngle = 90f;
+	public float gateOpenAngle = 90;
 	public float gateClosedAngle = 0;
 	public float gateAnimationSpeed = 2.0f;
 
@@ -34,11 +34,16 @@ public class GateBehaviour : MonoBehaviour {
 	}
 
 	public IEnumerator moveGate(Quaternion destination) {
-		while (Quaternion.Angle (transform.localRotation, destination) > 0f) {
+		while (Quaternion.Angle (transform.localRotation, destination) > 4.0f) {
 			transform.localRotation = Quaternion.Slerp(transform.localRotation, destination, Time.deltaTime * gateAnimationSpeed);
 			yield return null;
 		}
 
+		if (isGateOpen) {
+			isGateOpen = false;
+		} else {
+			isGateOpen = true;
+		}
 		yield return null;
 	}
 
@@ -46,12 +51,11 @@ public class GateBehaviour : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.E) && !isGateOpen && playerNear) {
 			StartCoroutine(this.moveGate(gateOpened));
-			isGateOpen = true;
+			print("Gate opened: " + transform.localRotation.eulerAngles.y);
 
-		} else if (Input.GetKeyDown (KeyCode.E) && isGateOpen && playerNear) {
+		} else if (isGateOpen && !playerNear) {
 			StartCoroutine(this.moveGate(gateClosed));
 			print ("closing gate..." + transform.localRotation.eulerAngles.y);
-			isGateOpen = false;
 		}
 
 	}
