@@ -51,11 +51,9 @@ public class GateBehaviour : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.E) && !isGateOpen && playerNear) {
 			StartCoroutine(this.moveGate(gateOpened));
-			print("Gate opened: " + transform.localRotation.eulerAngles.y);
 
 		} else if (isGateOpen && !playerNear) {
 			StartCoroutine(this.moveGate(gateClosed));
-			print ("closing gate..." + transform.localRotation.eulerAngles.y);
 		}
 
 	}

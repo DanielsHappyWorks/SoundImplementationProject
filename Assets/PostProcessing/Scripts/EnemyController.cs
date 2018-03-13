@@ -10,10 +10,10 @@ public class EnemyController : MonoBehaviour
     public float MoveSpeed = 2.5f;
     public float MaxDist = 10;
     public float MinDist = 1f;
-    public bool isWalking = false;
     public bool isIdling = true;
     Animator animator;
 	private Rigidbody rb;
+	public bool hitPlayer = false;
 
     void Start()
     {
@@ -27,38 +27,38 @@ public class EnemyController : MonoBehaviour
 
         if (Vector3.Distance(transform.position, Player.position) <= MinDist)
         {
-            //Kill Player
-        }
+			
+			isIdling = true;
+		}
         else if (Vector3.Distance(transform.position, Player.position) <= MaxDist)
         {
-            if (Vector3.Distance(transform.position, Player.position) >= MinDist) {
-                transform.LookAt(Player);
-                //transform.position += transform.forward * MoveSpeed * Time.deltaTime;
-				rb.AddForce (transform.forward * MoveSpeed);
-				//transform
-				if (!isWalking && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
-					animator.Play ("Walk");
-					isWalking = true;
-					isIdling = false;
-				}
-            } 
+			if (Vector3.Distance (transform.position, Player.position) >= MinDist) {
+				transform.LookAt (Player);
+				isIdling = false;
+				rb.AddForce (transform.forward * MoveSpeed * Time.deltaTime);
+
+			} else {
+				isIdling = true;
+			}
+
         }
         else {
             if (Vector3.Distance(transform.position, OriginalPosition.position) >= MinDist)
             {
                 transform.LookAt(OriginalPosition);
-                transform.position += transform.forward * MoveSpeed * Time.deltaTime;
-				if (!isWalking && !animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")){
-					animator.Play("Walk");
-                    isWalking = true;
-                    isIdling = false;
-                }
-            }
+				rb.AddForce (transform.forward * MoveSpeed * Time.deltaTime);
+
+			} else {
+				isIdling = true;
+			}
+				
         }
-        if (!isIdling) {
-            animator.Play("Idle");
-            isIdling = true;
-            isWalking = false;
-        }
+
+		if (isIdling) {
+			animator.SetBool ("isWalking", false);
+		} else {
+			animator.SetBool("isWalking", true);
+		}
+
     }
 }
