@@ -20,7 +20,7 @@ public class SpringBehaviour : MonoBehaviour {
 
 	void OnTriggerEnter(Collider player) {
 		if (player.tag == "Player") {
-			playerController.movementSettings.JumpForce = 250f;
+			playerController.movementSettings.JumpForce = 300f;
 			playerController.m_Jump = true;
 		}
 	}

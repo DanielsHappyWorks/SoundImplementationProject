@@ -89,8 +89,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_GroundContactNormal;
 		private bool m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 		public bool m_Jump;
+        public bool m_isOnCloudOne;
 
-		public int noOfPickups;
+        public int noOfPickups;
 
 
         public Vector3 Velocity
@@ -101,11 +102,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public bool Grounded
         {
             get { return m_IsGrounded; }
-        }
-
-        public bool Jumping
-        {
-            get { return m_Jumping; }
         }
 
         public bool Running
