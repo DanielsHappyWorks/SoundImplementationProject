@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4000012107547660}
   - component: {fileID: 33000010888334642}
   - component: {fileID: 23000013208029576}
-  - component: {fileID: 114000013586672726}
+  - component: {fileID: 114066986115500118}
   m_Layer: 0
   m_Name: Chest_open_top
   m_TagString: Untagged
@@ -187,7 +187,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010988861864}
   m_Mesh: {fileID: 4300002, guid: 17ad5f730440b884391e947e9d48165c, type: 3}
---- !u!114 &114000013586672726
+--- !u!114 &114066986115500118
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000014034047430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a15018d18db5d4b45a8741a99c62bff5, type: 3}
+  m_Script: {fileID: 11500000, guid: 15913ef199767ec4386aa1b733c0bf81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   factor: 0

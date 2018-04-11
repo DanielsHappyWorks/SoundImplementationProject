@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class EnemyController : MonoBehaviour
 {
-
+    public StateBehaviourScript stateControler;
     public Transform Player;
     public Transform OriginalPosition;
     public float MoveSpeed = 2.5f;
@@ -60,5 +60,14 @@ public class EnemyController : MonoBehaviour
 			animator.SetBool("isWalking", true);
 		}
 
+    }
+
+
+    void OnTriggerEnter(Collider player)
+    {
+        if (player.tag == "Player")
+        {
+            StartCoroutine(stateControler.Lose());
+        }
     }
 }

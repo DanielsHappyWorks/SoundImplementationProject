@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class OpenChest : MonoBehaviour {
+public class OpenChestCustom : MonoBehaviour {
 
     [Range(0.0f, 1.0f)]
     public float factor;
@@ -12,6 +14,7 @@ public class OpenChest : MonoBehaviour {
 
     public bool closing;
     public bool opening;
+    public StateBehaviourScript stateControler;
 
     public float speed = 0.5f;
 
@@ -27,7 +30,6 @@ public class OpenChest : MonoBehaviour {
         closedAngle = Quaternion.Euler(transform.eulerAngles + Vector3.right * newAngle);
 		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		isPlayerNear = false;
-
     }
 	
 	// Update is called once per frame
@@ -73,14 +75,12 @@ public class OpenChest : MonoBehaviour {
 	void OnTriggerEnter(Collider player) {
 		if (player.tag == "Player" ) {
 			isPlayerNear = true;
-			print ("Player near");
 		}
 	}
 
 	void OnTriggerExit(Collider player) {
 		if (player.tag == "Player") {			
 			isPlayerNear = false;
-			print ("Player not near");
 		}
 	}
 
@@ -88,8 +88,9 @@ public class OpenChest : MonoBehaviour {
 	void CheckInteraction()
 	{
 		if (isPlayerNear && Input.GetKeyDown (KeyCode.E) && playerController.noOfPickups == 3) {
-			Open ();	
-		}
+			Open ();
+            StartCoroutine(stateControler.Win());
+        }
 			
 	}
 }
