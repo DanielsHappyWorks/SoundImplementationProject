@@ -7,12 +7,13 @@ public class SpringBehaviour : MonoBehaviour {
 
 	public RigidbodyFirstPersonController playerController;
 	private float originalJump;
+	public float springForce;
 	// Use this for initialization
 	void Start () {
 		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		originalJump = playerController.movementSettings.JumpForce;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		
@@ -20,7 +21,7 @@ public class SpringBehaviour : MonoBehaviour {
 
 	void OnTriggerEnter(Collider player) {
 		if (player.tag == "Player") {
-			playerController.movementSettings.JumpForce = 300f;
+			playerController.movementSettings.JumpForce = springForce;
 			playerController.m_Jump = true;
 		}
 	}

@@ -89,7 +89,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_GroundContactNormal;
 		private bool m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 		public bool m_Jump;
-        public bool m_isOnCloudOne;
 
         public int noOfPickups;
 

@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.FirstPerson;
 
-public class CloudMovementUpDown : MonoBehaviour {
-	private RigidbodyFirstPersonController playerController;
+public class CloudMovementUpOnly : MonoBehaviour {
 	public float movementSpeed;
 	private float maxHeight;
 	private float initialHeight;
@@ -12,14 +10,13 @@ public class CloudMovementUpDown : MonoBehaviour {
 	private bool isPlayerColliding;
 	// Use this for initialization
 	void Start () {
-		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		movementSpeed = 5;
 		initialHeight = transform.position.y;
-		maxHeight = transform.position.y + 40;
+		maxHeight = transform.position.y + 30;
 		isMaxHeight = false;
 		isPlayerColliding = false;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		Move ();
@@ -29,15 +26,8 @@ public class CloudMovementUpDown : MonoBehaviour {
 	{
 		//move up until max height is reached and then move down and repeat
 
-		if (transform.position.y < maxHeight && !isMaxHeight) {
+		if (transform.position.y < maxHeight && !isMaxHeight && isPlayerColliding) {
 			transform.Translate (Vector3.up * Time.deltaTime * movementSpeed);
-		} else if(transform.position.y > initialHeight && isMaxHeight){
-			transform.Translate(-Vector3.up * Time.deltaTime * movementSpeed);
-			//move player down with cloud
-			if (isPlayerColliding && !playerController.m_Jump) {
-				playerController.transform.Translate(-Vector3.up * Time.deltaTime * movementSpeed);
-			}
-				
 		}
 
 		if (transform.position.y >= maxHeight) {
@@ -46,7 +36,7 @@ public class CloudMovementUpDown : MonoBehaviour {
 			isMaxHeight = false;
 		}
 	}
-		
+
 	void OnTriggerEnter(Collider player) {
 		if (player.tag == "Player" ) {
 			isPlayerColliding = true;

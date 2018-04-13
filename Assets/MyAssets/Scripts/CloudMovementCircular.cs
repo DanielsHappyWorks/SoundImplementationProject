@@ -9,7 +9,8 @@ public class CloudMovementCircular : MonoBehaviour {
     float timeCounter = 0;
     Vector3 prevPos;
     Vector3 originalPos;
-    bool isOnCloudOne = false;
+    bool isPlayerColliding;
+	Vector3 originalPlayerPosition;
 
     private RigidbodyFirstPersonController playerController;
     Vector3 playerPosition;
@@ -18,21 +19,27 @@ public class CloudMovementCircular : MonoBehaviour {
     {
         originalPos = transform.position;
         playerController = FindObjectOfType<RigidbodyFirstPersonController>();
+		isPlayerColliding = false;
+		originalPlayerPosition = playerController.transform.position;
     }
 
     // Update is called once per frame
+	//Moves cloud in circle, as well as player if colliding
     void Update()
     {
-        timeCounter += Time.deltaTime * 100;
-        transform.position = Quaternion.AngleAxis(timeCounter, Vector3.up) * new Vector3(4f, 0f) + originalPos;
+        timeCounter += Time.deltaTime * 70;
+        transform.position = Quaternion.AngleAxis(timeCounter, Vector3.up) * new Vector3(10f, 0f) + originalPos;
         prevPos = transform.position;
+		if (isPlayerColliding) {
+			playerController.transform.position = Quaternion.AngleAxis (timeCounter, Vector3.up) * new Vector3 (10f, 0f) + playerController.transform.position;
+		}
     }
 
     void OnTriggerEnter(Collider player)
     {
         if (player.tag == "Player")
         {
-            //set is on cloud == true
+			isPlayerColliding = true;
         }
     }
 
@@ -40,7 +47,7 @@ public class CloudMovementCircular : MonoBehaviour {
     {
         if (player.tag == "Player")
         {
-            //set is on cloud == false
+			isPlayerColliding = false;
         }
     }
 }
