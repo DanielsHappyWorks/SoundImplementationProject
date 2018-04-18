@@ -6,9 +6,12 @@ public class GateBehaviour : MonoBehaviour {
 
 	bool isGateOpen = false;
 	bool playerNear = false;
+    bool gateAction = false;
 
-	Quaternion gateClosed = Quaternion.identity;
+    Quaternion gateClosed = Quaternion.identity;
 	Quaternion gateOpened = Quaternion.identity;
+
+    AudioSource audioSource;
 
 	public float gateOpenAngle = 90;
 	public float gateClosedAngle = 0;
@@ -18,8 +21,9 @@ public class GateBehaviour : MonoBehaviour {
 	void Start () {
 		gateClosed = Quaternion.Euler (0, gateClosedAngle, 0);
 		gateOpened = Quaternion.Euler (0, gateOpenAngle, 0);
+        audioSource = GetComponent<AudioSource>();
 
-	}
+    }
 
 	void OnTriggerEnter(Collider player) {
 		if (player.tag == "Player" ) {
@@ -44,16 +48,26 @@ public class GateBehaviour : MonoBehaviour {
 		} else {
 			isGateOpen = true;
 		}
-		yield return null;
+        gateAction = false;
+        yield return null;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.E) && !isGateOpen && playerNear) {
-			StartCoroutine(this.moveGate(gateOpened));
+		if (Input.GetKeyDown (KeyCode.E) && !isGateOpen && playerNear && !gateAction) {
+            if (audioSource) {
+                audioSource.Play();
+            }
+            gateAction = true;
+            StartCoroutine(this.moveGate(gateOpened));
 
-		} else if (isGateOpen && !playerNear) {
-			StartCoroutine(this.moveGate(gateClosed));
+		} else if (Input.GetKeyDown(KeyCode.E) &&  isGateOpen && playerNear && !gateAction) {
+            if (audioSource)
+            {
+                audioSource.Play();
+            }
+            gateAction = true;
+            StartCoroutine(this.moveGate(gateClosed));
 		}
 
 	}

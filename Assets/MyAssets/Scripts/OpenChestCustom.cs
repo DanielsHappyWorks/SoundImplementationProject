@@ -12,6 +12,8 @@ public class OpenChest : MonoBehaviour {
     Quaternion closedAngle;
     Quaternion openedAngle;
 
+    AudioSource audioSource;
+
     public bool closing;
     public bool opening;
 
@@ -29,6 +31,7 @@ public class OpenChest : MonoBehaviour {
         closedAngle = Quaternion.Euler(transform.eulerAngles + Vector3.right * newAngle);
 		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		isPlayerNear = false;
+        audioSource = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -62,12 +65,14 @@ public class OpenChest : MonoBehaviour {
     {
         closing = true;
         opening = false;
+        audioSource.Play();
     }
 
     void Open()
     {
         opening = true;
         closing = false;
+        audioSource.Play();
     }
 
 	//New - Added code to trigger chest opening

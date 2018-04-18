@@ -13,8 +13,10 @@ public class PickupBehaviour : MonoBehaviour {
 	private float maxHeight;
 	private float initialHeight;
 	private bool isMaxHeight;
-	// Use this for initialization
-	void Start () {
+    private AudioSource audioSource;
+
+    // Use this for initialization
+    void Start () {
 		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		isDestroyed = false;
 		isPlayerNear = false;
@@ -23,8 +25,8 @@ public class PickupBehaviour : MonoBehaviour {
 		maxHeight = initialHeight + 0.5f;
 		movementSpeed = 0.3f;
 		isMaxHeight = false;
-
-	}
+        audioSource = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -50,12 +52,15 @@ public class PickupBehaviour : MonoBehaviour {
 	void Pickup()
 	{
 		if (!isDestroyed && isPlayerNear && Input.GetKeyDown (KeyCode.E)) {
-			Destroy (gameObject);
-			isDestroyed = true;
+            audioSource.Play();
+            isDestroyed = true;
 			playerController.noOfPickups++;
-
 		}
 
+        if(isDestroyed && !audioSource.isPlaying)
+        {
+            Destroy(gameObject);
+        }
 	}
 
 	void Move()
