@@ -6,13 +6,15 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class SpringBehaviour : MonoBehaviour {
 
 	public RigidbodyFirstPersonController playerController;
-	private float originalJump;
+    private AudioSource audioSource;
+    private float originalJump;
 	public float springForce;
 	// Use this for initialization
 	void Start () {
 		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		originalJump = playerController.movementSettings.JumpForce;
-	}
+        audioSource = GetComponent<AudioSource>();
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -23,15 +25,14 @@ public class SpringBehaviour : MonoBehaviour {
 		if (player.tag == "Player") {
 			playerController.movementSettings.JumpForce = springForce;
 			playerController.m_Jump = true;
-		}
+            audioSource.Play();
+        }
 	}
 
 	void OnTriggerExit(Collider player) {
 		if (player.tag == "Player") {
 			playerController.movementSettings.JumpForce = originalJump;
 			playerController.m_Jump = false;
-
-
 		}
 	}
 }
