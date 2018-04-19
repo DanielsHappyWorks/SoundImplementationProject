@@ -35,6 +35,11 @@ public class CloudMovementUpOnly : MonoBehaviour {
 		} else if (transform.position.y <= initialHeight) {
 			isMaxHeight = false;
 		}
+
+        if(!isPlayerColliding && transform.position.y > initialHeight)
+        {
+            transform.Translate( -1 * Vector3.up * Time.deltaTime * movementSpeed);
+        }
 	}
 
 	void OnTriggerEnter(Collider player) {
