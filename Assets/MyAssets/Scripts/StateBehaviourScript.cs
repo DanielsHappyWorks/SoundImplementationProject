@@ -9,18 +9,29 @@ public class StateBehaviourScript : MonoBehaviour {
     public CanvasRenderer panelCR;
     public GameObject winPanelContent;
     public GameObject losePanelContent;
+    public AudioClip[] winClips;
+
+    AudioSource audioSource;
 
     // Use this for initialization
     void Start () {
         panelCR.SetAlpha(0);
+        audioSource = GetComponent<AudioSource>();
     }
 
     public IEnumerator Win()
     {
         panel.GetComponent<Image>().CrossFadeAlpha(1f, 2.0f, false);
-        yield return new WaitForSeconds(2f);
+        audioSource.clip = winClips[0];
+        yield return new WaitForSeconds(1f);
+        audioSource.Play();
+        yield return new WaitForSeconds(1f);
         winPanelContent.SetActive(true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(4f);
+        audioSource.clip = winClips[1];
+        audioSource.volume = 0.7f;
+        audioSource.Play();
+        yield return new WaitForSeconds(2f);
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }

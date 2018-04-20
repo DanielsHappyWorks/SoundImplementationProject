@@ -4,7 +4,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class OpenChestCustom : MonoBehaviour {
+public class OpenChest : MonoBehaviour {
 
     [Range(0.0f, 1.0f)]
     public float factor;

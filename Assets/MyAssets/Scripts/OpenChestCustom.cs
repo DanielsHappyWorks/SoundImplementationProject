@@ -4,26 +4,20 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class OpenChest : MonoBehaviour {
+public class OpenChestCustom : MonoBehaviour {
+    Quaternion closedAngle;
+    Quaternion openedAngle;
+    AudioSource audioSource;
+    public float speed = 0.5f;
+    private bool isPlayerNear;
+    int newAngle = 127;
+    private RigidbodyFirstPersonController playerController;
 
     [Range(0.0f, 1.0f)]
     public float factor;
-
-    Quaternion closedAngle;
-    Quaternion openedAngle;
-
-    AudioSource audioSource;
-
+    public StateBehaviourScript stateControler;
     public bool closing;
     public bool opening;
-
-    public float speed = 0.5f;
-
-	private bool isPlayerNear;
-
-	private RigidbodyFirstPersonController playerController;
-
-    int newAngle = 127;
 
     // Use this for initialization
     void Start () {
@@ -37,7 +31,7 @@ public class OpenChest : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		CheckInteraction ();
+		CheckInteraction();
         if (closing)
         {
             factor += speed * Time.deltaTime;
@@ -65,14 +59,12 @@ public class OpenChest : MonoBehaviour {
     {
         closing = true;
         opening = false;
-        audioSource.Play();
     }
 
     void Open()
     {
         opening = true;
         closing = false;
-        audioSource.Play();
     }
 
 	//New - Added code to trigger chest opening
@@ -91,8 +83,10 @@ public class OpenChest : MonoBehaviour {
 	//New - Checks requirements to allow for chest opening
 	void CheckInteraction()
 	{
-		if (isPlayerNear && Input.GetKeyDown (KeyCode.E) && playerController.noOfPickups == 3) {
-			Open ();
+		if (isPlayerNear && Input.GetKeyDown(KeyCode.E) && playerController.noOfPickups == 3) {
+            audioSource.Play();
+            Open();
+            StartCoroutine(stateControler.Win());
         }
 			
 	}

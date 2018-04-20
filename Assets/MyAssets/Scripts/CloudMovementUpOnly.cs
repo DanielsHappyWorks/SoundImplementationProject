@@ -12,7 +12,7 @@ public class CloudMovementUpOnly : MonoBehaviour {
 	void Start () {
 		movementSpeed = 5;
 		initialHeight = transform.position.y;
-		maxHeight = transform.position.y + 30;
+		maxHeight = transform.position.y + 35;
 		isMaxHeight = false;
 		isPlayerColliding = false;
 	}
