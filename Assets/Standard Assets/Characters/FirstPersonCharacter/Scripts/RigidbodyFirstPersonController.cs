@@ -15,7 +15,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float BackwardSpeed = 4.0f;  // Speed when walking backwards
             public float StrafeSpeed = 4.0f;    // Speed when walking sideways
             public float RunMultiplier = 2.0f;   // Speed when sprinting
-	        public KeyCode RunKey = KeyCode.LeftShift;
+            public KeyCode RunKey = KeyCode.LeftShift;
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
             [HideInInspector] public float CurrentTargetSpeed = 8f;
@@ -92,6 +92,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public int noOfPickups;
 
+        public AudioClip[] walkClips;
+        public AudioClip[] runClips;
+        public AudioClip[] jumpClips;
+
+        public AudioClip[] walkClipsDefault;
+        public AudioClip[] runClipsDefault;
+        public AudioClip[] jumpClipsDefault;
+        AudioSource audioSource;
+
 
         public Vector3 Velocity
         {
@@ -122,6 +131,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
 			noOfPickups = 0;
+
+            audioSource = GetComponent<AudioSource>();
+            //set default sounds
+            walkClipsDefault = walkClips;
+            runClipsDefault = runClips;
+            jumpClipsDefault = jumpClips;
         }
 
 
@@ -155,6 +170,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
                 }
+
+                if (Running && m_IsGrounded && !audioSource.isPlaying)
+                {
+                    audioSource.clip = runClips[(int)UnityEngine.Random.Range(0, runClips.Length)];
+                    audioSource.Play();
+                }
+                else if(m_IsGrounded && !audioSource.isPlaying)
+                {
+                    audioSource.clip = walkClips[(int)UnityEngine.Random.Range(0, walkClips.Length)];
+                    audioSource.Play();
+                }
             }
 
             if (m_IsGrounded)
@@ -167,6 +193,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
                     m_Jumping = true;
+                    if (!audioSource.isPlaying || audioSource.clip != jumpClips[0])
+                    {
+                        audioSource.clip = jumpClips[0];
+                        audioSource.Play();
+                    }
                 }
 
                 if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f)
@@ -185,6 +216,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jump = false;
         }
 
+        public void SetAudioClips(AudioClip[] walk, AudioClip[] run, AudioClip[] jump)
+        {
+            walkClips = walk;
+            runClips = run;
+            jumpClips = jump;
+        }
+
+        public void SetAudioClipsDefault()
+        {
+            walkClips = walkClipsDefault;
+            runClips = runClipsDefault;
+            jumpClips = jumpClipsDefault;
+        }
 
         private float SlopeMultiplier()
         {
@@ -257,6 +301,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             if (!m_PreviouslyGrounded && m_IsGrounded && m_Jumping)
             {
+                if (!audioSource.isPlaying || audioSource.clip != jumpClips[1])
+                {
+                    audioSource.clip = jumpClips[1];
+                    audioSource.Play();
+                }
                 m_Jumping = false;
             }
         }
