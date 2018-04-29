@@ -9,8 +9,9 @@ public class SpringBehaviour : MonoBehaviour {
     private AudioSource audioSource;
     private float originalJump;
 	public float springForce;
-	// Use this for initialization
-	void Start () {
+    public bool isSetToJump;
+    // Use this for initialization
+    void Start () {
 		playerController = FindObjectOfType<RigidbodyFirstPersonController> ();
 		originalJump = playerController.movementSettings.JumpForce;
         audioSource = GetComponent<AudioSource>();
@@ -18,21 +19,24 @@ public class SpringBehaviour : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+		if(isSetToJump && playerController.Grounded)
+        {
+            playerController.m_Jump = true;
+            audioSource.Play();
+        }
 	}
 
 	void OnTriggerEnter(Collider player) {
 		if (player.tag == "Player") {
 			playerController.movementSettings.JumpForce = springForce;
-			playerController.m_Jump = true;
-            audioSource.Play();
+            isSetToJump = true;
         }
 	}
 
 	void OnTriggerExit(Collider player) {
 		if (player.tag == "Player") {
 			playerController.movementSettings.JumpForce = originalJump;
-			playerController.m_Jump = false;
+            isSetToJump = false;
 		}
 	}
 }
