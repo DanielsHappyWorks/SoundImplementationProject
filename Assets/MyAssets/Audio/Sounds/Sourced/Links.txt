@@ -10,3 +10,7 @@ Birds:
 https://freesound.org/people/CosmicEmbers/sounds/161649/ 
 Crystals:
 https://freesound.org/people/geerose/sounds/264290/
+Grass:
+https://freesound.org/people/freefire66/sounds/175955/
+Game Over:
+https://freesound.org/people/noirenex/sounds/159408/

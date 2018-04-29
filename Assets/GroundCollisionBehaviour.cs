@@ -23,12 +23,11 @@ public class GroundCollisionBehaviour : MonoBehaviour {
         }
     }
 
-    void OnTriggerExit(Collider col)
+    void OnTriggerStay(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == "Player" && rbfpc.jumpClips != this.jumpClips)
         {
-            rbfpc.walkClips = rbfpc.walkClipsDefault;
-            rbfpc.runClips = rbfpc.runClipsDefault;
+            rbfpc.jumpClips = this.jumpClips;
         }
     }
 
@@ -39,13 +38,22 @@ public class GroundCollisionBehaviour : MonoBehaviour {
             rbfpc.walkClips = this.walkClips;
             rbfpc.runClips = this.runClips;
         }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            collision.gameObject.GetComponent<EnemyController>().walkClips = this.walkClips;
+        }
     }
 
-    void OnCollisionExit(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && rbfpc.walkClips != this.walkClips)
         {
-            rbfpc.jumpClips = rbfpc.jumpClipsDefault;
+            rbfpc.walkClips = this.walkClips;
+            rbfpc.runClips = this.runClips;
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            collision.gameObject.GetComponent<EnemyController>().walkClips = this.walkClips;
         }
     }
 }

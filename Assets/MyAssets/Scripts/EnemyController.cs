@@ -15,10 +15,14 @@ public class EnemyController : MonoBehaviour
 	private Rigidbody rb;
 	public bool hitPlayer = false;
 
+    public AudioClip[] walkClips;
+    AudioSource audioSource;
+
     void Start()
     {
         animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody> ();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -58,7 +62,13 @@ public class EnemyController : MonoBehaviour
 			animator.SetBool ("isWalking", false);
 		} else {
 			animator.SetBool("isWalking", true);
-		}
+
+            if (!audioSource.isPlaying && walkClips != null)
+            {
+                audioSource.clip = walkClips[(int)UnityEngine.Random.Range(0, walkClips.Length)];
+                audioSource.Play();
+            }
+        }
 
     }
 

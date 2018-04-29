@@ -96,10 +96,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public AudioClip[] runClips;
         public AudioClip[] jumpClips;
 
-        public AudioClip[] walkClipsDefault;
-        public AudioClip[] runClipsDefault;
-        public AudioClip[] jumpClipsDefault;
-        AudioSource audioSource;
+        public AudioClip HeavyBreath, Panthing;
+        public bool wasRunning;
+
+        AudioSource audioSource, audioSourceReactions;
 
 
         public Vector3 Velocity
@@ -132,11 +132,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             mouseLook.Init (transform, cam.transform);
 			noOfPickups = 0;
 
-            audioSource = GetComponent<AudioSource>();
-            //set default sounds
-            walkClipsDefault = walkClips;
-            runClipsDefault = runClips;
-            jumpClipsDefault = jumpClips;
+            audioSource = GetComponents<AudioSource>()[0];
+            audioSourceReactions = GetComponents<AudioSource>()[1];
         }
 
 
@@ -175,11 +172,29 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     audioSource.clip = runClips[(int)UnityEngine.Random.Range(0, runClips.Length)];
                     audioSource.Play();
+
+                    if(!audioSource.isPlaying || audioSourceReactions.clip != HeavyBreath)
+                    {
+                        audioSourceReactions.clip = HeavyBreath;
+                        audioSourceReactions.volume = 0.6f;
+                        audioSourceReactions.loop = true;
+                        audioSourceReactions.Play();
+                        wasRunning = true;
+                    }
                 }
                 else if(m_IsGrounded && !audioSource.isPlaying)
                 {
                     audioSource.clip = walkClips[(int)UnityEngine.Random.Range(0, walkClips.Length)];
                     audioSource.Play();
+
+                    if (wasRunning)
+                    {
+                        audioSourceReactions.clip = Panthing;
+                        audioSourceReactions.volume = 1f;
+                        audioSourceReactions.loop = false;
+                        audioSourceReactions.Play();
+                        wasRunning = false;
+                    }
                 }
             }
 
@@ -221,13 +236,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             walkClips = walk;
             runClips = run;
             jumpClips = jump;
-        }
-
-        public void SetAudioClipsDefault()
-        {
-            walkClips = walkClipsDefault;
-            runClips = runClipsDefault;
-            jumpClips = jumpClipsDefault;
         }
 
         private float SlopeMultiplier()

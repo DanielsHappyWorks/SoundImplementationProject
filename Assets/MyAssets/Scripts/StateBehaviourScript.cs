@@ -10,6 +10,7 @@ public class StateBehaviourScript : MonoBehaviour {
     public GameObject winPanelContent;
     public GameObject losePanelContent;
     public AudioClip[] winClips;
+    public AudioClip loseClip;
 
     AudioSource audioSource;
 
@@ -40,6 +41,8 @@ public class StateBehaviourScript : MonoBehaviour {
     {
         panel.GetComponent<Image>().CrossFadeAlpha(1f, 0.5f, false);
         yield return new WaitForSeconds(0.5f);
+        audioSource.clip = loseClip;
+        audioSource.Play();
         losePanelContent.SetActive(true);
         yield return new WaitForSeconds(3.5f);
         Scene scene = SceneManager.GetActiveScene();
